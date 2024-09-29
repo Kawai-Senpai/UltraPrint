@@ -19,7 +19,11 @@ class logger:
     def _log(self, level, msg, color_func):
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         extra_info = self._get_extra_info() if self.include_extra_info else ''
-        formatted_msg = f'[{current_time}] [{level}] [{self.name}] {msg} [{extra_info}]'
+        if self.include_extra_info:
+            extra_info = self._get_extra_info()
+            formatted_msg = f'[{current_time}] [{level}] [{self.name}] {msg} [{extra_info}]'
+        else:
+            formatted_msg = f'[{current_time}] [{level}] [{self.name}] {msg}'
         color_func(formatted_msg)
         with open(self.filename, 'a') as f:
             f.write(f'{formatted_msg}\n')
@@ -41,9 +45,3 @@ class logger:
 
     def critical(self, msg):
         self._log('CRITICAL', msg, p.red_bg)
-
-#use it
-log = logger('test', include_extra_info=True)
-log.info('This is an info message')
-log.error('This is an error message')
-log.warning('This is a warning message')
