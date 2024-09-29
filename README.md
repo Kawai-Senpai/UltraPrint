@@ -1,5 +1,7 @@
 # `ultraprint` - A Python Library for Enhanced Terminal Output
 
+![Cover](https://github.com/Kawai-Senpai/UltraPrint/blob/f138c8b4c5e9178f200815c05f1ab29259642a54/Assets/UltraPrint%20Thumbnail.png)
+
 Welcome to `ultraprint`! This Python library is designed to enhance terminal output with colorful and styled text, making your console logs more readable and aesthetically pleasing developed by [*Ranit Bhowmick*](https://www.linkedin.com/in/ranitbhowmick/) & [*Sayanti Chatterjee*](https://www.linkedin.com/in/sayantichatterjee/). Whether you're building a command-line application, debugging code, or just want to add some flair to your terminal, `ultraprint` provides a simple and effective solution.
 
 ## Table of Contents
