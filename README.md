@@ -1,8 +1,6 @@
 # `ultraprint` - A Python Library for Enhanced Terminal Output
 
-![UltraPrint Cover](https://github.com/Kawai-Senpai/UltraPrint/blob/322e063873b4e5bdcca242a4633098af5fbde827/Assets/UltraPrint%20Thumbnail.png)
-
-Welcome to [`ultraprint`!](https://pypi.org/project/ultraprint/) This Python library is designed to enhance terminal output with colorful and styled text, making your console logs more readable and aesthetically pleasing developed by [*Ranit Bhowmick*](https://www.linkedin.com/in/ranitbhowmick/) & [*Sayanti Chatterjee*](https://www.linkedin.com/in/sayantichatterjee/). Whether you're building a command-line application, debugging code, or just want to add some flair to your terminal, `ultraprint` provides a simple and effective solution.
+Welcome to `ultraprint`! This Python library is designed to enhance terminal output with colorful and styled text, making your console logs more readable and aesthetically pleasing developed by [*Ranit Bhowmick*](https://www.linkedin.com/in/ranitbhowmick/) & [*Sayanti Chatterjee*](https://www.linkedin.com/in/sayantichatterjee/). Whether you're building a command-line application, debugging code, or just want to add some flair to your terminal, `ultraprint` provides a simple and effective solution.
 
 ## Table of Contents
 
@@ -96,13 +94,13 @@ p.n(3)  # Prints three new lines
 
 ### Logger Class
 
-The `ultraprint` library includes a `logger` class for structured logging with different severity levels. The logger can output messages both to the console and to a log file.
+The `ultraprint` library includes a `logger` class for structured logging with different severity levels, timestamped entries, and optional extra contextual information (like the file name, function, and line number). Logs can be output both to the console and to a log file.
 
 ```python
 from ultraprint.logging import logger
 
-# Create a logger object
-log = logger('example_log')
+# Create a logger object with extra info enabled
+log = logger('example_log', include_extra_info=True)
 
 # Log some messages
 log.info('This is an info message')
@@ -117,14 +115,38 @@ log.critical('This is a critical message')
 
 The `logger` class provides the following methods:
 
-- `info(msg)`: Logs an informational message.
-- `error(msg)`: Logs an error message.
-- `warning(msg)`: Logs a warning message.
-- `success(msg)`: Logs a success message.
-- `debug(msg)`: Logs a debug message.
-- `critical(msg)`: Logs a critical message.
+- `info(msg)`: Logs an informational message (in cyan).
+- `error(msg)`: Logs an error message (in red).
+- `warning(msg)`: Logs a warning message (in yellow).
+- `success(msg)`: Logs a success message (in green).
+- `debug(msg)`: Logs a debug message (in dark gray).
+- `critical(msg)`: Logs a critical message (with a red background).
 
-All methods write the log entry to both the console (in color) and to a log file with the same name as the logger.
+Each method writes the log entry to both the console (using colored output) and to a log file named after the logger (e.g., `example_log.log`).
+
+### Extra Information
+
+The `logger` class allows you to include extra context, such as the filename, function name, and line number where the log message was called, using the `include_extra_info=True` flag. This is particularly useful for debugging.
+
+```python
+log = logger('detailed_log', include_extra_info=True)
+log.info('Logging with extra information')
+```
+
+This will output something like:
+
+```
+[2024-09-29 12:34:56] [INFO] [detailed_log] Logging with extra information [script.py:my_function:42]
+```
+
+### Custom Filename for Logs
+
+You can specify a custom filename for the log file by passing the `filename` argument when creating a logger object. If not provided, the default filename will be the name of the logger followed by `.log`.
+
+```python
+log = logger('custom_logger', filename='custom_log_file.log')
+log.info('This will be logged in custom_log_file.log')
+```
 
 ## Documentation
 
@@ -164,7 +186,7 @@ These functions print the provided text with different background colors:
 
 ### Logger Class
 
-The `logger` class provides structured logging with colored outputs. Each log method corresponds to a different level of severity and prints in a specific color.
+The `logger` class provides structured logging with timestamped entries and colored outputs. Each log method corresponds to a different severity level and prints in a specific color.
 
 #### Logger Methods:
 
@@ -174,6 +196,8 @@ The `logger` class provides structured logging with colored outputs. Each log me
 - **success(msg)**: Logs a success message in green.
 - **debug(msg)**: Logs a debug message in dark gray.
 - **critical(msg)**: Logs a critical message with a red background.
+
+You can enable extra context (like the file name, function name, and line number) with `include_extra_info=True`.
 
 ## Examples
 
@@ -187,12 +211,12 @@ p.bold("This is bold text")
 p.red_bg("This is red background text")
 ```
 
-### Using the Logger
+### Using the Logger with Extra Information
 
 ```python
 from ultraprint.logging import logger
 
-log = logger('example_log')
+log = logger('example_log', include_extra_info=True)
 log.info('Starting the process...')
 log.success('Process completed successfully!')
 log.warning('This is a warning')

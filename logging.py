@@ -1,39 +1,49 @@
+from datetime import datetime
+import inspect
 import ultraprint.common as p
 
 class logger:
-    def __init__(self, name, filename=None):
+    def __init__(self, name, filename=None, include_extra_info=False):
         self.name = name
+        self.include_extra_info = include_extra_info
         if filename:
             self.filename = filename
         else:
             self.filename = f'{name}.log'
 
-    def info(self, msg):
-        p.cyan(f'INFO: {self.name}: {msg}')
+    def _get_extra_info(self):
+        frame = inspect.currentframe().f_back.f_back
+        info = inspect.getframeinfo(frame)
+        return f'{info.filename}:{info.function}:{info.lineno}'
+
+    def _log(self, level, msg, color_func):
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        extra_info = self._get_extra_info() if self.include_extra_info else ''
+        formatted_msg = f'[{current_time}] [{level}] [{self.name}] {msg} [{extra_info}]'
+        color_func(formatted_msg)
         with open(self.filename, 'a') as f:
-            f.write(f'INFO: {self.name}: {msg}\n')
+            f.write(f'{formatted_msg}\n')
+
+    def info(self, msg):
+        self._log('INFO', msg, p.cyan)
 
     def error(self, msg):
-        p.red(f'ERROR: {self.name}: {msg}')
-        with open(self.filename, 'a') as f:
-            f.write(f'ERROR: {self.name}: {msg}\n')
+        self._log('ERROR', msg, p.red)
 
     def warning(self, msg):
-        p.yellow(f'WARNING: {self.name}: {msg}')
-        with open(self.filename, 'a') as f:
-            f.write(f'WARNING: {self.name}: {msg}\n')
+        self._log('WARNING', msg, p.yellow)
 
     def success(self, msg):
-        p.green(f'SUCCESS: {self.name}: {msg}')
-        with open(self.filename, 'a') as f:
-            f.write(f'SUCCESS: {self.name}: {msg}\n')
+        self._log('SUCCESS', msg, p.green)
 
     def debug(self, msg):
-        p.dgray(f'DEBUG: {self.name}: {msg}')
-        with open(self.filename, 'a') as f:
-            f.write(f'DEBUG: {self.name}: {msg}\n')
+        self._log('DEBUG', msg, p.dgray)
 
     def critical(self, msg):
-        p.red_bg(f'CRITICAL: {self.name}: {msg}')
-        with open(self.filename, 'a') as f:
-            f.write(f'CRITICAL: {self.name}: {msg}\n')
+        self._log('CRITICAL', msg, p.red_bg)
+
+#use it
+log = logger('test', include_extra_info=True)
+log.info('This is an info message')
+log.error('This is an error message')
+log.warning('This is a warning message')
