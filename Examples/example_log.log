@@ -1,6 +1,0 @@
-INFO: example_log: This is an info message
-ERROR: example_log: This is an error message
-WARNING: example_log: This is a warning message
-SUCCESS: example_log: This is a success message
-DEBUG: example_log: This is a debug message
-CRITICAL: example_log: This is a critical message
