@@ -1,7 +1,5 @@
 # `ultraprint` - A Python Library for Enhanced Terminal Output
 
-![Cover](https://github.com/Kawai-Senpai/UltraPrint/blob/f138c8b4c5e9178f200815c05f1ab29259642a54/Assets/UltraPrint%20Thumbnail.png)
-
 Welcome to `ultraprint`! This Python library is designed to enhance terminal output with colorful and styled text, making your console logs more readable and aesthetically pleasing developed by [*Ranit Bhowmick*](https://www.linkedin.com/in/ranitbhowmick/) & [*Sayanti Chatterjee*](https://www.linkedin.com/in/sayantichatterjee/). Whether you're building a command-line application, debugging code, or just want to add some flair to your terminal, `ultraprint` provides a simple and effective solution.
 
 ## Table of Contents
@@ -200,6 +198,14 @@ The `logger` class provides structured logging with timestamped entries and colo
 - **critical(msg)**: Logs a critical message with a red background.
 
 You can enable extra context (like the file name, function name, and line number) with `include_extra_info=True`.
+
+#### Setting Log Level:
+
+By default, the log level is set to `INFO`, which means that all log messages with a severity level of `INFO` or higher will be displayed. You can change the log level by calling the `set_log_level` method with one of the following options: `INFO`, `SUCCESS`, `WARNING`, `ERROR`, `CRITICAL`.
+
+#### Setting Log File:
+
+By default, logs are written to a file with the same name as the logger followed by `.log`. You can disable writing to a file by setting `write_to_file=False` when creating the logger object or by calling the `set_write_to_file` method. If you want to specify a custom filename, you can pass the `filename` argument when creating the logger object.
 
 ## Examples
 
