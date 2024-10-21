@@ -1,0 +1,12 @@
+[2024-09-29 19:06:43] [INFO] [example_log] This is an info message
+[2024-09-29 19:06:43] [ERROR] [example_log] This is an error message
+[2024-09-29 19:06:43] [WARNING] [example_log] This is a warning message
+[2024-09-29 19:06:43] [SUCCESS] [example_log] This is a success message
+[2024-09-29 19:06:43] [DEBUG] [example_log] This is a debug message
+[2024-09-29 19:06:43] [CRITICAL] [example_log] This is a critical message
+[2024-09-29 19:07:35] [INFO] [example_log] This is an info message [C:\Users\Ranit Bhowmick\AppData\Local\Programs\Python\Python311\Lib\site-packages\ultraprint\logging.py:info:32]
+[2024-09-29 19:07:35] [ERROR] [example_log] This is an error message [C:\Users\Ranit Bhowmick\AppData\Local\Programs\Python\Python311\Lib\site-packages\ultraprint\logging.py:error:35]
+[2024-09-29 19:07:35] [WARNING] [example_log] This is a warning message [C:\Users\Ranit Bhowmick\AppData\Local\Programs\Python\Python311\Lib\site-packages\ultraprint\logging.py:warning:38]
+[2024-09-29 19:07:35] [SUCCESS] [example_log] This is a success message [C:\Users\Ranit Bhowmick\AppData\Local\Programs\Python\Python311\Lib\site-packages\ultraprint\logging.py:success:41]
+[2024-09-29 19:07:35] [DEBUG] [example_log] This is a debug message [C:\Users\Ranit Bhowmick\AppData\Local\Programs\Python\Python311\Lib\site-packages\ultraprint\logging.py:debug:44]
+[2024-09-29 19:07:35] [CRITICAL] [example_log] This is a critical message [C:\Users\Ranit Bhowmick\AppData\Local\Programs\Python\Python311\Lib\site-packages\ultraprint\logging.py:critical:47]
