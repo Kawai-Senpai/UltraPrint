@@ -92,11 +92,20 @@ p.n()  # Prints one new line
 p.n(3)  # Prints three new lines
 ```
 
+### Screen Management Functions
+
+The `ultraprint` library also provides functions to manage the terminal screen:
+
+```python
+p.cls()  # Clears the terminal screen
+p.cls_prev()  # Clears the previous line
+```
+
 ## Advanced Usage: Logging
 
 ### Logger Class
 
-The `ultraprint` library includes a `logger` class for structured logging with different severity levels, timestamped entries, and optional extra contextual information (like the file name, function, and line number). Logs can be output both to the console and to a log file.
+The `ultraprint` library includes an enhanced `logger` class for structured logging with different severity levels, customizable formats, log rotation, and optional extra contextual information (like the file name, function, and line number). Logs can be output both to the console and to a log file, with thread safety ensured for multi-threaded applications.
 
 ```python
 from ultraprint.logging import logger
@@ -208,6 +217,38 @@ By default, the log level is set to `INFO`, which means that all log messages wi
 #### Setting Log File:
 
 By default, logs are written to a file with the same name as the logger followed by `.log`. You can disable writing to a file by setting `write_to_file=False` when creating the logger object or by calling the `set_write_to_file` method. If you want to specify a custom filename, you can pass the `filename` argument when creating the logger object.
+
+#### Custom Log Formats
+
+You can customize the format of your log messages by providing the `log_format` parameter when creating a `logger` object. The default format is `[{time}] [{level}] [{name}] {message}`. You can include the following placeholders in your custom format:
+
+- `{time}`: Timestamp of the log entry.
+- `{level}`: Log level (e.g., INFO, ERROR).
+- `{name}`: Name of the logger.
+- `{message}`: The log message.
+- `{extra_info}`: Extra context information if `include_extra_info` is `True`.
+
+**Example:**
+
+```python
+log = logger('custom_format_log', log_format='[{time}] [{level}] {message} - {extra_info}', include_extra_info=True)
+log.info('This is a custom formatted log message')
+```
+
+#### Exception Method
+
+The `logger` class also provides an `exception` method to log exceptions with traceback information. This is useful for debugging purposes.
+
+**Example:**
+
+```python
+try:
+    1 / 0
+except ZeroDivisionError as e:
+    log.exception('An exception occurred')
+```
+
+This will log the exception message along with the traceback information.
 
 ## Examples
 

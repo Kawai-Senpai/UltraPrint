@@ -84,3 +84,16 @@ def dgray_bg(*args, end="\n"):
 def n(n=1):
     for i in range(n):
         print()
+
+#? Screen Management ----------------------------------------------------
+
+#! Clear Screen
+def cls():
+    """Clear the entire console screen."""
+    import os
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+#! Clear Previous Line
+def cls_prev():
+    """Clear the previous line in the console."""
+    print('\033[F\033[K', end='')
