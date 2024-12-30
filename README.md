@@ -245,7 +245,7 @@ The `logger` class also provides an `exception` method to log exceptions with tr
 try:
     1 / 0
 except ZeroDivisionError as e:
-    log.exception('An exception occurred')
+    log.error('An exception occurred')
 ```
 
 This will log the exception message along with the traceback information.
