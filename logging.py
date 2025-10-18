@@ -91,9 +91,79 @@ class logger:
         finally:
             del frame  # Prevent reference cycles
 
-    def _format_message(self, *args):
+    def _format_message(self, *args, **kwargs):
+        """
+        Format message like Python's logging module and print() combined.
+        Supports multiple formatting styles:
+        1. f-strings: log.info(f"Value is {value}")
+        2. % formatting: log.info("Value is %s", value) or log.info("Value is %s" % value)
+        3. .format(): log.info("Value is {}", value) or log.info("Value is {}".format(value))
+        4. Multiple args: log.info("Multiple", "args", value)
+        
+        Maintains full backward compatibility.
+        """
         try:
-            # Convert all arguments to strings safely
+            # No args - return empty string
+            if not args:
+                return ""
+            
+            # Single arg - just stringify it (handles f-strings, % formatting, .format() already evaluated)
+            if len(args) == 1:
+                return self._safe_str(args[0])[:1000000]
+            
+            # Multiple args - check if first arg is a format string
+            first_arg = args[0]
+            if isinstance(first_arg, str):
+                # Try % formatting first (e.g., "Value is %s", value)
+                if '%' in first_arg and '%%' not in first_arg:  # Exclude escaped %
+                    try:
+                        # Check if we have enough args for % formatting
+                        # Count the number of format specifiers (including width/precision like %.2f)
+                        import re
+                        # Match % followed by optional flags, width, precision, and type specifier
+                        format_matches = re.findall(r'%[-#0 +]?[\*\d]*\.?[\*\d]*[hlL]?[diouxXeEfFgGcrsatp%]', first_arg)
+                        # Filter out %% (escaped percent)
+                        format_count = len([m for m in format_matches if m != '%%'])
+                        
+                        if format_count > 0 and len(args) - 1 >= format_count:
+                            # Apply % formatting with remaining args
+                            if format_count == 1:
+                                msg = first_arg % args[1]
+                            else:
+                                msg = first_arg % tuple(args[1:format_count+1])
+                            
+                            # If there are remaining args after formatting, append them
+                            if len(args) > format_count + 1:
+                                remaining = ' '.join(self._safe_str(arg) for arg in args[format_count+1:])
+                                msg = f"{msg} {remaining}"
+                            
+                            return msg[:1000000]
+                    except (TypeError, ValueError, KeyError) as e:
+                        # % formatting failed, fall through to default behavior
+                        pass
+                
+                # Try .format() style (e.g., "Value is {}", value)
+                if '{' in first_arg and '}' in first_arg:
+                    try:
+                        # Count placeholders
+                        import re
+                        placeholder_count = len(re.findall(r'\{\}|\{[0-9]+\}', first_arg))
+                        
+                        if placeholder_count > 0 and len(args) - 1 >= placeholder_count:
+                            # Apply .format() with remaining args
+                            msg = first_arg.format(*args[1:placeholder_count+1])
+                            
+                            # If there are remaining args after formatting, append them
+                            if len(args) > placeholder_count + 1:
+                                remaining = ' '.join(self._safe_str(arg) for arg in args[placeholder_count+1:])
+                                msg = f"{msg} {remaining}"
+                            
+                            return msg[:1000000]
+                    except (IndexError, KeyError, ValueError):
+                        # .format() failed, fall through to default behavior
+                        pass
+            
+            # Default: Multiple args - join with spaces like print() does
             msg = ' '.join(self._safe_str(arg) for arg in args)
             return msg[:1000000]  # Limit message size to prevent memory issues
         except Exception as e:
